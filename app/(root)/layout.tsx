@@ -1,7 +1,25 @@
+import Image from 'next/image'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
-  return <div>{children}</div>
+  return (
+    <div className='root-layout'>
+      <nav>
+        <Link href='/' className='flex items-center gap-2'>
+          <Image
+            src='/logo.svg'
+            alt='PrepWize Logo'
+            width={38}
+            height={38}
+            // className='w-10 h-10'
+          />
+          <h2 className='text-primary-100'>PrepWize</h2>
+        </Link>
+      </nav>
+      {children}
+    </div>
+  )
 }
 
 export default RootLayout
