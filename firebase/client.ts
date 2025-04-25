@@ -3,13 +3,13 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDqp4YoPBa-VH7B2NN79WyjNxqeEN8nNCk",
-  authDomain: "prepwizecall.firebaseapp.com",
-  projectId: "prepwizecall",
-  storageBucket: "prepwizecall.firebasestorage.app",
-  messagingSenderId: "295723452725",
-  appId: "1:295723452725:web:901074dae1e0bd4935247c",
-  measurementId: "G-YNZGFBF8HE"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = !getApps.length ? initializeApp(firebaseConfig) : getApp();
