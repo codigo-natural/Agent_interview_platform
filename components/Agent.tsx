@@ -6,6 +6,7 @@ import { vapi } from '@/lib/vapi.sdk'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { interviewer } from '@/constants'
+import { createFeedback } from '@/lib/actions/general.action'
 
 enum CallStatus {
   INACTIVE = 'INACTIVE',
@@ -35,8 +36,6 @@ export const Agent = ({
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE)
   const [messages, setMessages] = useState<SavedMessage[]>([])
-
-  const lastMessage = messages[messages.length - 1]
 
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE)
@@ -74,11 +73,11 @@ export const Agent = ({
 
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
     console.log('Generate feedback here.')
-    // TODO: Create a server action that generates feedback based on the messages
-    const { success, id } = {
-      success: true,
-      id: 'feedback-id',
-    }
+    const { success, feedbaackId: id } = await createFeedback({
+      interviewId: interviewId!,
+      userId: userId!,
+      transcript: messages,
+    })
 
     if (success && id) {
       router.push(`/interview/${interviewId}/feedback`)
