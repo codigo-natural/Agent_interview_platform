@@ -8,6 +8,7 @@ import { auth } from '@/firebase/client'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 
 import {
   createUserWithEmailAndPassword,
@@ -30,6 +31,7 @@ const authFormSchema = (type: FormType) => {
 
 export const AuthForm = ({ type }: { type: FormType }) => {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   const formSchema = authFormSchema(type)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,6 +45,7 @@ export const AuthForm = ({ type }: { type: FormType }) => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
       if (type === 'sign-up') {
         const { name, email, password } = data
 
@@ -92,6 +95,8 @@ export const AuthForm = ({ type }: { type: FormType }) => {
     } catch (error) {
       console.log(error)
       toast.error(`There was an error: ${error}`)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -138,17 +143,21 @@ export const AuthForm = ({ type }: { type: FormType }) => {
               type='password'
             />
 
-            <Button className='btn' type='submit'>
-              {isSignIn ? 'Sign In' : 'Create an Account'}
+            <Button className='btn' type='submit' disabled={isLoading}>
+              {isLoading
+                ? 'Processing...'
+                : isSignIn
+                ? 'Sign In'
+                : 'Create an Account'}
             </Button>
           </form>
         </Form>
 
-        <p className='text-center'>
+        <p className='text-center text-gray-300'>
           {isSignIn ? 'No account yet?' : 'Have an account already?'}
           <Link
             href={!isSignIn ? '/sign-in' : '/sign-up'}
-            className='font-bold text-user-primary ml-1'
+            className='font-bold text-white ml-1'
           >
             {!isSignIn ? 'Sign In' : 'Sign Up'}
           </Link>
